@@ -1,4 +1,6 @@
-﻿namespace YagodaCore
+﻿using System;
+
+namespace YagodaCore
 {
     internal class YagodaCoreTest
     {
@@ -7,8 +9,9 @@
             using (var yagodaCore = new CoreYagoda())
             {
                 yagodaCore.Connect();
-                yagodaCore.GetInfo("79625020828").ToString();
+                Console.WriteLine(yagodaCore.GetInfo("79625020828").ToString());
             };
+            Console.ReadLine();
         }
     }
 }

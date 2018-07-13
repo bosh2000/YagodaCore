@@ -20,6 +20,15 @@ namespace YagodaCore
         /// Информация о балансе и покупках участника программы.
         /// </summary>
         public Info info { get; set; }
+
+        /// <summary>
+        /// Переопределенный метод ToString().
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return profile.ToString()+"\n\r"+info.ToString();
+        }
     }
 
     public class Profile
@@ -44,6 +53,15 @@ namespace YagodaCore
         /// Коментарий.
         /// </summary>
         public string comment { get; set; }
+
+        public override string ToString()
+        {
+            return name + "\n\r" +
+                birthDate + "\n\r" +
+                sex + "\n\r" +
+                fromSomeone + "\n\r" +
+                comment;
+        }
     }
 
     public class Info
@@ -80,5 +98,28 @@ namespace YagodaCore
         /// Сегмент покупок.
         /// </summary>
         public List<string> segments { get; set; }
+
+        public override string ToString()
+        {
+            string retValue = balance + "\n\r" +
+                averagePurchaseAmount + "\n\r" +
+                rubSum + "\n\r" +
+                status + "\n\r" +
+                age + "\n\r" +
+                monthCount + "\n\r";
+//                lastPurchase +
+  //              segments;
+            foreach(object obj in lastPurchase)
+            {
+                retValue += obj.ToString()+"\n\r";
+            }
+
+            foreach(string str in segments)
+            {
+                retValue += str + "\n\r";
+            }
+
+            return retValue;
+        }
     }
 }

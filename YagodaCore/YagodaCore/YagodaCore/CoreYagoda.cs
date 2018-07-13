@@ -1,30 +1,37 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Net;
+using System.Text;
 using YagodaCore.Date;
-using Newtonsoft.Json;
 
 namespace YagodaCore
 {
-    internal class CoreYagoda  : System.IDisposable
+    internal class CoreYagoda : System.IDisposable
     {
+        private WebClient webClient;
 
-        private string Url = "dev.progrepablic.ru";
+        private string Url = "http://dev.progrepublic.ru";
         private string Login = "vapeko";
         private string Password = "vapeko321";
         private string Port = "57773";
         private string IdSale = "GE";
-
 
         public CoreYagoda()
         {
         }
 
         /// <summary>
-        /// Подключение к базе.
+        /// Подготовка и инициализация WebClient
         /// </summary>
         /// <returns></returns>
         public bool Connect()
         {
-            return true;
+            webClient = new WebClient()
+            {
+                Encoding = Encoding.UTF8
+            };
+
+            return webClient == null ? false : true;
         }
 
         /// <summary>
@@ -34,8 +41,24 @@ namespace YagodaCore
         /// <returns>Класс Entity, десерелизованный Json ответ </returns>
         public Entity GetInfo(string NumberTel)
         {
-            string json="";
-            return JsonConvert.DeserializeObject<Entity>(json);
+            string urlRequest = Url + ":" + Port + "/csp/yagodapreprod/" + IdSale + "/getJsonInfo/" + NumberTel;
+
+            string responceJson = string.Empty;
+
+            try
+            {
+                NetworkCredential networkCredential = new NetworkCredential(Login, Password);
+                webClient.Credentials = networkCredential;
+                responceJson = webClient.DownloadString(new Uri(urlRequest));
+            }
+            catch (WebException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            Entity result = JsonConvert.DeserializeObject<Entity>(responceJson);
+
+            return result;
         }
 
         /// <summary>
@@ -53,7 +76,7 @@ namespace YagodaCore
         /// </summary>
         public void Dispose()
         {
-            throw new NotImplementedException();
+            webClient.Dispose();
         }
     }
 }
