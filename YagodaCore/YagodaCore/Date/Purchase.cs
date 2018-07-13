@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace YagodaCore
+namespace YagodaCore.Date
 {
-    class Program
+    class Purchase
     {
-        static void Main(string[] args)
-        {
-        }
+
     }
 }
