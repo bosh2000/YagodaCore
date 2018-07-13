@@ -10,6 +10,9 @@ namespace YagodaCore
     {
         private WebClient webClient;
 
+        /// <summary>
+        /// Параметры подключения к серверу Ягоды.
+        /// </summary>
         private string Url = "http://dev.progrepublic.ru";
         private string Login = "vapeko";
         private string Password = "vapeko321";
@@ -23,7 +26,7 @@ namespace YagodaCore
         /// <summary>
         /// Подготовка и инициализация WebClient
         /// </summary>
-        /// <returns></returns>
+        /// <returns>False при неудачной попытки создать объект.</returns>
         public bool Connect()
         {
             webClient = new WebClient()
