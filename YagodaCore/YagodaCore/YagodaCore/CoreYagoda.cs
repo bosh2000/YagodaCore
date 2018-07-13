@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Net;
 using System.Text;
 using YagodaCore.Date;
@@ -71,6 +72,33 @@ namespace YagodaCore
         /// <returns></returns>
         public bool WritePurchase(Purchase purchase)
         {
+
+            var json = JsonConvert.SerializeObject(purchase);
+
+            try
+            {
+                NetworkCredential networkCredential = new NetworkCredential(Login, Password);
+                //webClient.Credentials = networkCredential;
+                var httpRequest = (HttpWebRequest)WebRequest.Create(new Uri(Url + ":" + Port + "/csp/yagodapreprod/" + IdSale +"/postdata"));
+                httpRequest.Method = "POST";
+                httpRequest.Credentials = networkCredential;
+                httpRequest.ContentType = "application/json";
+                
+                using (var requestStream = httpRequest.GetRequestStream())
+                using (var writer = new StreamWriter(requestStream))
+                {
+                    writer.Write(json);
+                }
+                using (var httpResponse = httpRequest.GetResponse())
+                using (var responseStream = httpResponse.GetResponseStream())
+                using (var reader = new StreamReader(responseStream))
+                {
+                    string response = reader.ReadToEnd();
+                }
+            }catch (WebException exp)
+            {
+                Console.WriteLine(exp.Message);
+            }
             return true;
         }
 
