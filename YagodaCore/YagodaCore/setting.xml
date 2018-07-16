@@ -6,6 +6,6 @@
         <Password>vapeko321</Password>
         <Port>57773</Port>
         <IdSale>GE</IdSale>
-        <PrefixDataBase>yagodapreprod</PrefixDataBase>
+        <PrefixDataBase>/csp/yagodapreprod</PrefixDataBase>
 
 </SettingYagodaCore>

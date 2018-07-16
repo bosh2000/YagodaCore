@@ -43,7 +43,7 @@ namespace YagodaCore
         /// <returns>Класс Entity, десерелизованный Json ответ </returns>
         public Entity GetInfo(string NumberTel)
         {
-            string urlRequest = setting.Url + ":" + setting.Port + "/csp/"+setting.PrefixDataBase+"/" + setting.IdSale + "/getJsonInfo/" + NumberTel;
+            string urlRequest = setting.Url + ":" + setting.Port + setting.PrefixDataBase+"/" + setting.IdSale + "/getJsonInfo/" + NumberTel;
 
             string responceJson = string.Empty;
 
@@ -76,7 +76,7 @@ namespace YagodaCore
             try
             {
                 NetworkCredential networkCredential = new NetworkCredential(setting.Login, setting.Password);
-                var httpRequest = (HttpWebRequest)WebRequest.Create(new Uri(setting.Url + ":" + setting.Port + "/csp/"+setting.PrefixDataBase+"/" + setting.IdSale +"/postdata"));
+                var httpRequest = (HttpWebRequest)WebRequest.Create(new Uri(setting.Url + ":" + setting.Port + setting.PrefixDataBase+"/" + setting.IdSale +"/postdata"));
                 httpRequest.Method = "POST";
                 httpRequest.Credentials = networkCredential;
                 httpRequest.ContentType = "application/json";
