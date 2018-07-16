@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Date\Purchase.cs" />
     <Compile Include="Date\Entity.cs" />
+    <Compile Include="YagodaCore\SettingYagodaCore.cs" />
     <Compile Include="YagodaCore\InitYagodaCore.cs" />
     <Compile Include="YagodaCore\CoreYagoda.cs" />
     <Compile Include="YagodaCoreTest.cs" />
@@ -55,6 +56,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="setting.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

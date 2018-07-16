@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<setting>
+  <url>http://dev.progrepublic.ru</url>
+  <login>vapeko</login>
+  <password>vapeko321</password>
+  <port>57773</port>
+  <idsale>GE</idsale>
+  <prefixdatabase>yagodapreprod</prefixdatabase>
+</setting>
