@@ -78,7 +78,6 @@ namespace YagodaCore
             try
             {
                 NetworkCredential networkCredential = new NetworkCredential(Login, Password);
-                //webClient.Credentials = networkCredential;
                 var httpRequest = (HttpWebRequest)WebRequest.Create(new Uri(Url + ":" + Port + "/csp/yagodapreprod/" + IdSale +"/postdata"));
                 httpRequest.Method = "POST";
                 httpRequest.Credentials = networkCredential;

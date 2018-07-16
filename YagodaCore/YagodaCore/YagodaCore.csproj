@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Date\Purchase.cs" />
     <Compile Include="Date\Entity.cs" />
+    <Compile Include="YagodaCore\InitYagodaCore.cs" />
     <Compile Include="YagodaCore\CoreYagoda.cs" />
     <Compile Include="YagodaCoreTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
