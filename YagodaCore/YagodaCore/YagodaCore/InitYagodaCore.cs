@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace YagodaCore
 {
@@ -13,26 +14,30 @@ namespace YagodaCore
 
         public void InitYagodaCore()
         {
+            
         }
 
+        /// <summary>
+        /// Десерилизация xml файла с настройками в класс setting/
+        /// </summary>
+        /// <returns></returns>
         public SettingYagodaCore GetSetting()
         {
-            var xDoc = new XmlDocument();
+            setting=new SettingYagodaCore();
+            FileStream fileStream=null;
             try
             {
-                xDoc.Load("seeting.xml");
-            }catch(IOException ext)
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(SettingYagodaCore));
+                fileStream = new FileStream("setting.xml", FileMode.Open);
+                setting = (SettingYagodaCore)xmlSerializer.Deserialize(fileStream);
+            } catch (Exception exp)
             {
-                Console.WriteLine(ext.Message);
+                Console.WriteLine(exp.Message);
+            }
+            finally {
+                if (fileStream != null) { fileStream.Close(); };
             }
 
-            XmlElement xRoot = xDoc.DocumentElement;
-            setting.Url = xRoot.GetAttribute("url");
-            setting.Login = xRoot.GetAttribute("login");
-            setting.Password = xRoot.GetAttribute("password");
-            setting.Port = xRoot.GetAttribute("port");
-            setting.IdSale = xRoot.GetAttribute("idsale");
-            setting.PrefixDataBase = xRoot.GetAttribute("prefixdatabase");
             return setting;
         }
     }

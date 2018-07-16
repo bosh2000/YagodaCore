@@ -3,7 +3,7 @@
     /// <summary>
     /// Класс с описанием настроек.
     /// </summary>
-    internal class SettingYagodaCore
+    public class SettingYagodaCore
     {
         /// <summary>
         /// Параметры подключения к серверу Ягоды.

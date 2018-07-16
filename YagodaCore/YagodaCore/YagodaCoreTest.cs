@@ -11,7 +11,13 @@ namespace YagodaCore
             using (var yagodaCore = new CoreYagoda())
             {
 
-                yagodaCore.Connect();
+                try
+                {
+                    yagodaCore.Connect();
+                }catch(Exception exp)
+                {
+
+                }
 
                 Console.WriteLine(yagodaCore.GetInfo("79625020828").ToString());
 
