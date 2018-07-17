@@ -1,27 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using YagodaCore.Date;
+using NLog;
 
 namespace YagodaCore
 {
     internal class YagodaCoreTest
     {
+        public static Logger logger;
         private static void Main(string[] args)
         {
-            using (var yagodaCore = new CoreYagoda())
+            logger = LogManager.GetCurrentClassLogger();
+            using (var yagodaCore = new CoreYagoda(logger))
             {
 
                 try
                 {
+                    logger.Info("Открываем подключение к базе...");
                     yagodaCore.Connect();
                 }catch(Exception exp)
                 {
-
+                    logger.Error("Ошибка подключения к базе." + exp.Message);
+                }
+                finally
+                {
+                    logger.Info("Подключение к базе успешно.");
                 }
 
                 Console.WriteLine(yagodaCore.GetInfo("79625020828").ToString());
 
-
+                
                 Purchase purchase = new Purchase()
                 {
                     buyerTel = "+7(962)5020828",

@@ -4,21 +4,24 @@ using System.IO;
 using System.Net;
 using System.Text;
 using YagodaCore.Date;
+using NLog;
 
 namespace YagodaCore
 {
     internal class CoreYagoda : System.IDisposable
     {
         private WebClient webClient;
+        private Logger logger;
 
         ///// <summary>
         ///// Параметры подключения к серверу Ягоды.
         ///// </summary>
         SettingYagodaCore setting;
 
-        public CoreYagoda()
+        public CoreYagoda(Logger logger)
         {
-            var init=new InitYagodaCode();
+            this.logger = logger;
+            var init=new InitYagodaCore(logger);
             setting = init.GetSetting(); 
         }
 
@@ -53,9 +56,11 @@ namespace YagodaCore
                 webClient.Credentials = networkCredential;
                 responceJson = webClient.DownloadString(new Uri(urlRequest));
             }
-            catch (WebException ex)
+            catch (WebException exp)
             {
-                Console.WriteLine(ex.Message);
+                var errorString = "Ошибка получения информации по номеру телефона -" + NumberTel;
+                errorString += ";" + exp.Message;
+                logger.Error(errorString);
             }
 
             Entity result = JsonConvert.DeserializeObject<Entity>(responceJson);
@@ -72,6 +77,7 @@ namespace YagodaCore
         {
 
             var json = JsonConvert.SerializeObject(purchase);
+            var response = string.Empty ;
 
             try
             {
@@ -90,12 +96,15 @@ namespace YagodaCore
                 using (var responseStream = httpResponse.GetResponseStream())
                 using (var reader = new StreamReader(responseStream))
                 {
-                    string response = reader.ReadToEnd();
+                    response = reader.ReadToEnd();
                 }
             }catch (WebException exp)
             {
-                Console.WriteLine(exp.Message);
+                var errorString = "Ошибка записи бонусов для клиента - " + purchase.buyerTel;
+                errorString += ";" + exp.Message;
+                logger.Error(errorString);
             }
+            logger.Info("Ответ сервера при записи покупки - " + response);
             return true;
         }
 
@@ -104,6 +113,7 @@ namespace YagodaCore
         /// </summary>
         public void Dispose()
         {
+            logger.Info("Закрытие рессурсов webClient");
             webClient.Dispose();
         }
     }

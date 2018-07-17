@@ -2,19 +2,21 @@
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using NLog;
 
 namespace YagodaCore
 {
     /// <summary>
     /// Класс инициализации YagodaCore , чтение настроек подключения.
     /// </summary>
-    internal class InitYagodaCode
+    internal class InitYagodaCore
     {
         private SettingYagodaCore setting;
+        private Logger logger;
 
-        public void InitYagodaCore()
+        public InitYagodaCore(Logger logger)
         {
-            
+            this.logger = logger;
         }
 
         /// <summary>
