@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
+using NLog;
 using System;
 using System.IO;
 using System.Net;
 using System.Text;
 using YagodaCore.Date;
-using NLog;
 
 namespace YagodaCore
 {
@@ -16,13 +16,13 @@ namespace YagodaCore
         ///// <summary>
         ///// Параметры подключения к серверу Ягоды.
         ///// </summary>
-        SettingYagodaCore setting;
+        private SettingYagodaCore setting;
 
         public CoreYagoda(Logger logger)
         {
             this.logger = logger;
-            var init=new InitYagodaCore(logger);
-            setting = init.GetSetting(); 
+            var init = new InitYagodaCore(logger);
+            setting = init.GetSetting();
         }
 
         /// <summary>
@@ -46,7 +46,12 @@ namespace YagodaCore
         /// <returns>Класс Entity, десерелизованный Json ответ </returns>
         public Entity GetInfo(string NumberTel)
         {
-            string urlRequest = setting.Url + ":" + setting.Port + setting.PrefixDataBase+"/" + setting.IdSale + "/getJsonInfo/" + NumberTel;
+            string urlRequest = string.Format("{0}:{1}{2}/{3}/getJsonInfo/{4}",
+                setting.Url,
+                setting.Port,
+                setting.PrefixDataBase,
+                setting.IdSale,
+                NumberTel);
 
             string responceJson = string.Empty;
 
@@ -75,18 +80,17 @@ namespace YagodaCore
         /// <returns></returns>
         public bool WritePurchase(Purchase purchase)
         {
-
             var json = JsonConvert.SerializeObject(purchase);
-            var response = string.Empty ;
+            var response = string.Empty;
 
             try
             {
                 NetworkCredential networkCredential = new NetworkCredential(setting.Login, setting.Password);
-                var httpRequest = (HttpWebRequest)WebRequest.Create(new Uri(setting.Url + ":" + setting.Port + setting.PrefixDataBase+"/" + setting.IdSale +"/postdata"));
+                var httpRequest = (HttpWebRequest)WebRequest.Create(new Uri(setting.Url + ":" + setting.Port + setting.PrefixDataBase + "/" + setting.IdSale + "/postdata"));
                 httpRequest.Method = "POST";
                 httpRequest.Credentials = networkCredential;
                 httpRequest.ContentType = "application/json";
-                
+
                 using (var requestStream = httpRequest.GetRequestStream())
                 using (var writer = new StreamWriter(requestStream))
                 {
@@ -98,13 +102,24 @@ namespace YagodaCore
                 {
                     response = reader.ReadToEnd();
                 }
-            }catch (WebException exp)
+            }
+            catch (WebException exp)
             {
                 var errorString = "Ошибка записи бонусов для клиента - " + purchase.buyerTel;
                 errorString += ";" + exp.Message;
                 logger.Error(errorString);
             }
             logger.Info("Ответ сервера при записи покупки - " + response);
+            return true;
+        }
+
+        /// <summary>
+        /// Списание бонусов при оплате бонусами.
+        /// </summary>
+        /// <param name="purchase">Покупка</param>
+        /// <returns>Если списание прошло успешно то true/</returns>
+        public bool WriteOffPurchase(Purchase purchase)
+        {
             return true;
         }
 
